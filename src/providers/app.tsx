@@ -1,7 +1,6 @@
 import * as React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { QueryClientProvider } from "react-query";
-import { BrowserRouter as Router } from "react-router-dom";
 
 import { queryClient } from "../lib/react-query";
 import { Button } from "../components/Button";
@@ -39,7 +38,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     >
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <QueryClientProvider client={queryClient}>
-          <Router>{children}</Router>
+          {children}
         </QueryClientProvider>
       </ErrorBoundary>
     </React.Suspense>

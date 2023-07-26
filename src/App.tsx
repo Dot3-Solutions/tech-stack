@@ -1,5 +1,10 @@
+import { Layout } from "./components/Layout";
+import { AppProvider } from "./providers/app";
+
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  <AppProvider>
+    <Layout>empty</Layout>
+  </AppProvider>;
 }
 
 export default App;

@@ -6,12 +6,12 @@ const variants = {
     "border border-primary-color bg-on-primary-color text-primary-color",
 };
 
-interface ButtonProps {
+export type ButtonProps = {
   type?: keyof typeof variants;
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
-}
+};
 
 export const Button = ({
   type = "primary",
