@@ -6,13 +6,13 @@ export type ButtonProps = {
   onClick?: () => void;
 };
 
-export const PrimaryButton = ({ text = "primary", onClick }: ButtonProps) => {
+export const PrimaryButton = ({ text = "TEXT", onClick }: ButtonProps) => {
   return (
     <Button
       type="primary"
       children={
         <Typography
-          fontSize="text-sm"
+          fontSize="text-base"
           fontWeight="font-normal"
           lineHeight="leading-8"
           color="text-white"

@@ -1,20 +1,19 @@
 import { Button } from "./Button";
+import { ButtonProps } from "./PrimaryButton";
 import { Typography } from "./Typography";
+ 
 
-export type ButtonProps = {
-  text?: string;
-};
-
-export const PrimaryButton = ({ text = "primary" }: ButtonProps) => {
+export const SecondaryButton = ({ text = "TEXT", onClick }: ButtonProps) => {
   return (
     <Button
       type="secondary"
+      onClick={onClick}
       children={
         <Typography
           fontSize="text-sm"
           fontWeight="font-normal"
           lineHeight="leading-8"
-          color="text-white"
+          color="text-black"
           text={text}
         />
       }
