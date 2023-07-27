@@ -10,6 +10,7 @@ export default {
         white: "#FAFAFA",
         error: "#D86161",
         grey: "#7A7A7A",
+        "primary-color": "#1597E4",
       },
     },
   },

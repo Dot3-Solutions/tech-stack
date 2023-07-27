@@ -1,9 +1,10 @@
 import { twMerge } from "tailwind-merge";
 
 const variants = {
-  primary: "border border-transparent bg-primary-color text-on-primary-color",
+  primary:
+    "flex px-4 py-2 justify-center items-center rounded rounded-md shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]",
   secondary:
-    "border border-primary-color bg-on-primary-color text-primary-color",
+    "flex px-4 py-2 justify-center items-center border rounded rounded-[0.3125rem] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]",
 };
 
 export type ButtonProps = {
@@ -23,7 +24,7 @@ export const Button = ({
     <button
       type="button"
       className={twMerge(
-        `inline-flex cursor-pointer justify-center text-center rounded font-Regular`,
+        `inline-flex cursor-pointer justify-center text-center rounded font-Regular `,
         `bg-primary-color`,
         variants[type],
         className
