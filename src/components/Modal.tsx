@@ -5,34 +5,9 @@ import { Typography } from './Typography';
 import { PrimaryButton } from './PrimaryButton';
 import { Step1 } from './Step1';
 import { Step2, Step2FormValues } from './Step2';
-import * as yup from 'yup';
-import { useCreateJob } from '../api/createJob';
 import { SubmitHandler } from 'react-hook-form';
 
-const stepTwoSchema = yup.object().shape({
-  experienceMinimum: yup.number(),
-  experienceMaximum: yup
-    .number()
-    .test(
-      'is-greater',
-      'Maximum experience should be greater than or equal to minimum experience',
-      function (value) {
-        return this.parent.experienceMinimum <= value;
-      }
-    ),
-  salaryMinimum: yup.number(),
-  salaryMaximum: yup
-    .number()
-    .test(
-      'is-greater',
-      'Maximum salary should be greater than or equal to minimum salary',
-      function (value = 0) {
-        return this.parent.salaryMinimum <= value;
-      }
-    ),
-  totalEmployee: yup.number(),
-  applyType: yup.boolean(),
-});
+
 
 interface ModalProps {
   isOpen: boolean;
@@ -40,7 +15,6 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, closeModal }: ModalProps) => {
-  const createJobMutation = useCreateJob();
 
   const [step, setStep] = useState<number>(1);
 
