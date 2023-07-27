@@ -6,6 +6,7 @@ import { PrimaryButton } from './PrimaryButton';
 import { Step1, Step1FormValues } from './Step1';
 import { Step2, Step2FormValues } from './Step2';
 import { SubmitHandler } from 'react-hook-form';
+import { useCreateJob } from '../api/createJob';
 
 interface ModalProps {
   isOpen: boolean;
