@@ -1,12 +1,12 @@
-import { useMutation } from "react-query";
-import toast from "react-hot-toast";
-import { MutationConfig, queryClient } from "../lib/react-query";
-import { axios } from "../lib/axios";
-import { Job } from "../types";
+import { useMutation } from 'react-query';
+import toast from 'react-hot-toast';
+import { MutationConfig, queryClient } from '../lib/react-query';
+import { axios } from '../lib/axios';
+import { Job } from '../types';
 
-const key = "jobs"
+const key = 'jobs';
 
-const deleteJob = ( id: string ) => {
+const deleteJob = (id: string) => {
   return axios.delete(`/Job/${id}`);
 };
 
@@ -21,10 +21,8 @@ export const useDeleteJob = ({ config }: UseDeleteJobOptions = {}) => {
       const previousJobs = queryClient.getQueryData<Job[]>(key);
       queryClient.setQueryData(
         key,
-        previousJobs?.filter(
-          (job) => job.id !== id
-        )
-      );    
+        previousJobs?.filter((job) => job.id !== id)
+      );
       return { previousJobs };
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,10 +33,9 @@ export const useDeleteJob = ({ config }: UseDeleteJobOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(key);
-      toast.success("Job Deleted");
+      toast.success('Job Deleted');
     },
     ...config,
     mutationFn: deleteJob,
   });
 };
- 

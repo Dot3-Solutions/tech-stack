@@ -1,13 +1,11 @@
-import { Button } from "./Button";
-import { ButtonProps } from "./PrimaryButton";
-import { Typography } from "./Typography";
- 
+import { Button } from './Button';
+import { ButtonProps } from './PrimaryButton';
+import { Typography } from './Typography';
 
-export const SecondaryButton = ({ text = "TEXT", onClick }: ButtonProps) => {
+export const SecondaryButton = ({ text = 'TEXT', ...props }: ButtonProps) => {
   return (
     <Button
       type="secondary"
-      onClick={onClick}
       children={
         <Typography
           fontSize="text-sm"
@@ -17,6 +15,7 @@ export const SecondaryButton = ({ text = "TEXT", onClick }: ButtonProps) => {
           text={text}
         />
       }
+      {...props}
     />
   );
 };

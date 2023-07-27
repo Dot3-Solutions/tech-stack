@@ -1,32 +1,22 @@
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
 const variants = {
-  primary:
-    "rounded-md shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] bg-primary-color",
-  secondary: "border border-primary-color rounded-[0.3125rem] bg-white",
+  primary: 'rounded-md shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] bg-primary-color',
+  secondary: 'border border-primary-color rounded-[0.3125rem] bg-white',
 };
-
 export type ButtonProps = {
   type?: keyof typeof variants;
   children: React.ReactNode;
-  form: string;
+  form?: string;
   onClick?: () => void;
 };
 
-export const Button = ({
-  type = "primary",
-  children,
-  form,
-  ...props
-}: ButtonProps) => {
+export const Button = ({ type = 'primary', children, form = '', ...props }: ButtonProps) => {
   return (
     <button
-      type="submit"
+      type={'submit'} // Update to customType here
       form={form}
-      className={twMerge(
-        `flex justify-center px-4 py-2 items-center`,
-        variants[type]
-      )}
+      className={twMerge(`flex justify-center px-4 py-2 items-center`, variants[type])}
       {...props}
     >
       {children}

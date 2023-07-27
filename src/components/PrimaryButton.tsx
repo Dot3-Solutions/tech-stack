@@ -1,12 +1,13 @@
-import { Button } from "./Button";
-import { Typography } from "./Typography";
+import { Button } from './Button';
+import { Typography } from './Typography';
 
 export type ButtonProps = {
   text?: string;
   form?: string;
+  onClick?: () => void;
 };
 
-export const PrimaryButton = ({ text = "TEXT", form = "" }: ButtonProps) => {
+export const PrimaryButton = ({ text = 'TEXT', form = '', ...props }: ButtonProps) => {
   return (
     <Button
       type="primary"
@@ -20,6 +21,7 @@ export const PrimaryButton = ({ text = "TEXT", form = "" }: ButtonProps) => {
         />
       }
       form={form}
+      {...props}
     />
   );
 };
