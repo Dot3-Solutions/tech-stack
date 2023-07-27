@@ -2,22 +2,28 @@ import { InputField } from "./InputField";
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { RadioGroup } from "@headlessui/react";
+import { Typography } from './Typography';
+import { RadioButton } from './RadioButton';
 
-// Define your validation schema for Step2
-// Define your validation schema for Step2
-// Define your validation schema for Step2
+const applyTypeOptions = [
+    { value: 'quickApply', label: 'Quick apply' },
+    { value: 'externalApply', label: 'External apply' },
+];
+
 const stepTwoSchema = yup.object().shape({
     experienceMinimum: yup.number(),
     experienceMaximum: yup.number()
         .when(['experienceMinimum'], (experienceMinimum, schema) => {
-            return experienceMinimum ? schema.min(experienceMinimum, 'Maximum experience should be greater than or equal to minimum experience') : schema;
+            return experienceMinimum ? schema.min(experienceMinimum, 'Minimum ≤ Maximum Experience') : schema;
         }),
     salaryMinimum: yup.number(),
     salaryMaximum: yup.number()
         .when(['salaryMinimum'], (salaryMinimum, schema) => {
-            return salaryMinimum ? schema.min(salaryMinimum, 'Maximum salary should be greater than or equal to minimum salary') : schema;
+            return salaryMinimum ? schema.min(salaryMinimum, 'Minimum ≤ Maximum Salary') : schema;
         }),
     totalEmployee: yup.number(),
+    appylyType: yup.string(),
 });
 
 
@@ -26,6 +32,7 @@ export const Step2 = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(stepTwoSchema),
     });
+
 
     console.log("error", errors)
 
@@ -36,7 +43,7 @@ export const Step2 = () => {
     return (
         <form id="step2Form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 mt-6 ">
             <div className="flex gap-6">
-                <div>
+                <div className="w-full">
                     <Controller
                         name="experienceMinimum"
                         control={control}
@@ -51,35 +58,41 @@ export const Step2 = () => {
                     />
 
                 </div>
-                <Controller
-                    name="experienceMaximum"
-                    control={control}
-                    render={({ field }) =>
-                        <InputField
-                            {...field}
-                            type="number"
-                            placeholder="Maximum"
-                            label=""
-                        />
-                    }
-                />
-                {errors.experienceMaximum && <p className="text-error">{errors.experienceMaximum.message}</p>}
+                <div className="w-full">
+                    <Controller
+                        name="experienceMaximum"
+                        control={control}
+                        render={({ field }) =>
+                            <InputField
+                                {...field}
+                                type="number"
+                                placeholder="Maximum"
+                                label=""
+                            />
+                        }
+                    />
+                    {errors.experienceMaximum && <p className="text-error">{errors.experienceMaximum.message}</p>}
+
+                </div>
 
             </div>
             <div className="flex gap-6">
-                <Controller
-                    name="salaryMinimum"
-                    control={control}
-                    render={({ field }) =>
-                        <InputField
-                            {...field}
-                            type="number"
-                            placeholder="Minimum"
-                            label="Salary"
-                        />
-                    }
-                />
-                <div>
+                <div className="w-full">
+                    <Controller
+                        name="salaryMinimum"
+                        control={control}
+                        render={({ field }) =>
+                            <InputField
+                                {...field}
+                                type="number"
+                                placeholder="Minimum"
+                                label="Salary"
+                            />
+                        }
+                    />
+
+                </div>
+                <div className="w-full">
                     <Controller
                         name="salaryMaximum"
                         control={control}
@@ -107,6 +120,23 @@ export const Step2 = () => {
                     />
                 }
             />
-        </form>
+
+            <div className="mt-4">
+                <Controller
+                    name="applyType"
+                    control={control}
+                    render={({ field }) => (
+                        <RadioButton
+                            {...field}
+                            options={applyTypeOptions}
+                            form="step2Form"
+                            label="Apply type"
+                        />
+                    )}
+                />
+                {/* <label className="block text-lg font-semibold">Select an option:</label> */}
+
+            </div>
+        </form >
     );
 };

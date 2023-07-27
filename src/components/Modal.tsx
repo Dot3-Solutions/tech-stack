@@ -6,6 +6,7 @@ import { PrimaryButton } from "./PrimaryButton";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import * as yup from 'yup';
+import { useCreateJob } from '../api/createJob';
 
 const stepTwoSchema = yup.object().shape({
   experienceMinimum: yup.number(),
@@ -35,6 +36,8 @@ interface ModalProps {
 
 export const Modal = ({ isOpen, closeModal }: ModalProps) => {
 
+  const createJobMutation = useCreateJob();
+
   const [step, setStep] = useState<number>(1);
 
   const handleNextStep = () => {
@@ -60,7 +63,7 @@ export const Modal = ({ isOpen, closeModal }: ModalProps) => {
           <div className="fixed inset-0 bg-black bg-opacity-50" />
         </Transition.Child>
 
-        <div className="fixed inset-0 overflow-y-auto">
+        <div className="fixed inset-0 overflow-y-auto font-Poppins">
           <div className="flex min-h-full items-center justify-center ">
             <Transition.Child
               as={Fragment}

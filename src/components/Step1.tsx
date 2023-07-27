@@ -69,22 +69,28 @@ export const Step1 = ({ onSubmit }: Step1Props) => {
 
                 </div>
                 <div className="flex gap-6">
-                    <Controller
-                        name="location"
-                        control={control}
-                        render={({ field }) =>
-                            <InputField  {...field} placeholder="ex. Chennai" label="Location" />
+                    <div className="w-full">
+                        <Controller
+                            name="location"
+                            control={control}
+                            render={({ field }) =>
+                                <InputField  {...field} placeholder="ex. Chennai" label="Location" />
 
-                        }
-                    />
-                    <Controller
-                        name="remoteType"
-                        control={control}
-                        render={({ field }) =>
-                            <InputField  {...field} placeholder="ex. In-office" label="Remote type" />
+                            }
+                        />
 
-                        }
-                    />
+                    </div>
+                    <div className="w-full">
+                        <Controller
+                            name="remoteType"
+                            control={control}
+                            render={({ field }) =>
+                                <InputField  {...field} placeholder="ex. In-office" label="Remote type" />
+
+                            }
+                        />
+
+                    </div>
 
                 </div>
             </form>

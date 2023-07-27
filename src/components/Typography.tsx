@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 
 export type TypographyProps = {
     fontSize: string,
@@ -22,6 +23,6 @@ export const Typography = ({
     const line = `${lineHeight}`
     const textColor = `${color}`
     return (
-        <div className={`${className} ${size} ${weight} ${line} ${textColor}`}>{text} </div>
+        <div className={twMerge(className, size, weight, line, textColor)}>{text} </div>
     );
 };
