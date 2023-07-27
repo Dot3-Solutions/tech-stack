@@ -2,8 +2,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { SecondaryButton } from './SecondaryButton';
 import { useDeleteJob } from '../api/deleteJob';
-import { Spinner } from './Spinner';
-import { PrimaryButton } from './PrimaryButton';
 import { DeleteButton } from './DeleteButton';
 
 interface ConfirmModalProps {
