@@ -11,9 +11,10 @@ interface JobCardProps {
   job: Job;
   setOpenConfirm: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedId: React.Dispatch<React.SetStateAction<string>>;
+  setIsForEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const JobCard = ({ job, setOpenConfirm, setSelectedId }: JobCardProps) => {
+export const JobCard = ({ job, setOpenConfirm, setSelectedId, setIsForEdit }: JobCardProps) => {
   const jobExperience: string = useMemo(() => {
     if (!job) return '';
     let str = '';
@@ -99,7 +100,15 @@ export const JobCard = ({ job, setOpenConfirm, setSelectedId }: JobCardProps) =>
               )}
             </div>
             <div className="ml-auto flex items-center gap-4">
-              <img src={Edit} className="h-5 w-5 cursor-pointer" alt="" />
+              <img
+                src={Edit}
+                className="h-5 w-5 cursor-pointer"
+                alt=""
+                onClick={() => {
+                  setSelectedId(job.id);
+                  setIsForEdit(true);
+                }}
+              />
               <img
                 src={Delete}
                 className="h-5 w-5 cursor-pointer"

@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { Typography } from './Typography';
 import { PrimaryButton } from './PrimaryButton';
-import { Step1 } from './Step1';
+import { Step1, Step1FormValues } from './Step1';
 import { Step2, Step2FormValues } from './Step2';
 import * as yup from 'yup';
 import { useCreateJob } from '../api/createJob';
@@ -36,23 +36,32 @@ const stepTwoSchema = yup.object().shape({
 
 interface ModalProps {
   isOpen: boolean;
+  isForEdit: boolean;
+  id?: string;
   closeModal: () => void;
 }
 
 export const Modal = ({ isOpen, closeModal }: ModalProps) => {
   const createJobMutation = useCreateJob();
-
+  const [step1Data, setStep1Data] = useState<Step1FormValues>();
   const [step, setStep] = useState<number>(1);
 
   const handleNextStep = () => {
     setStep((prevStep) => prevStep + 1);
   };
-  const onSubmitStep1 = (data) => {
-    console.log('Error', data);
+  const onSubmitStep1: SubmitHandler<Step1FormValues> = (data) => {
+    setStep1Data(data);
     handleNextStep();
   };
-  const onSubmitStep2: SubmitHandler<Step2FormValues> = (data) => {
-    console.log(data);
+  const onSubmitStep2: SubmitHandler<Step2FormValues> = async (data) => {
+    console.log('FormData', data, step1Data);
+    await createJobMutation.mutateAsync({
+      ...step1Data,
+      applyType: data.applyType ? 'apply' : 'external',
+      ...data,
+    });
+    closeModal();
+    setStep(1);
   };
 
   return (

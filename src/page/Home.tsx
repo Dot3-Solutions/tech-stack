@@ -15,6 +15,7 @@ const Home = () => {
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isForEdit, setIsForEdit] = useState<boolean>(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const [selectedId, setSelectedId] = useState<string>('');
@@ -22,10 +23,8 @@ const Home = () => {
     <div className="mb-9 font-Poppins">
       <div className="max-w-[90%] mx-auto px-4 pt-5">
         <div className="flex justify-end">
-          <PrimaryButton text="Create Job" onClick={openModal} />
           <SecondaryButton text="Create Job" onClick={openModal} />
         </div>
-        <Modal isOpen={isOpen} closeModal={closeModal} />
         {isLoading ? (
           <div className="flex items-center justify-center h-[80vh]">
             <Spinner />
@@ -42,6 +41,7 @@ const Home = () => {
                     job={job}
                     setOpenConfirm={setOpenConfirm}
                     setSelectedId={setSelectedId}
+                    setIsForEdit={setIsForEdit}
                   ></JobCard>
                 );
               })}
@@ -49,6 +49,7 @@ const Home = () => {
         )}
       </div>
 
+      <Modal isOpen={isOpen} closeModal={closeModal} isForEdit={isForEdit} id={selectedId} />
       <ConfirmModal isOpen={openConfirm} id={selectedId} closeModal={() => setOpenConfirm(false)} />
     </div>
   );
