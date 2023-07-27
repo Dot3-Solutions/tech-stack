@@ -1,4 +1,5 @@
 import { Button } from "./components/Button";
+import { InputField } from "./components/InputField";
 import { Layout } from "./components/Layout";
 import { Typography } from "./components/Typography";
 import { AppProvider } from "./providers/app";
@@ -16,8 +17,7 @@ function App() {
           color="text-black"
           text="UX UI Designer"
         />} />
-
-
+        <InputField label="Job title" />
       </Layout>
     </AppProvider>
   );
