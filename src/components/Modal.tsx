@@ -1,30 +1,35 @@
-import { useState } from 'react'
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { Typography } from "./Typography";
-import { PrimaryButton } from "./PrimaryButton";
-import { Step1 } from "./Step1";
-import { Step2 } from "./Step2";
+import { useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { Typography } from './Typography';
+import { PrimaryButton } from './PrimaryButton';
+import { Step1 } from './Step1';
+import { Step2, Step2FormValues } from './Step2';
 import * as yup from 'yup';
 import { useCreateJob } from '../api/createJob';
+import { SubmitHandler } from 'react-hook-form';
 
 const stepTwoSchema = yup.object().shape({
   experienceMinimum: yup.number(),
-  experienceMaximum: yup.number().test(
-    'is-greater',
-    'Maximum experience should be greater than or equal to minimum experience',
-    function (value) {
-      return this.parent.experienceMinimum <= value;
-    }
-  ),
+  experienceMaximum: yup
+    .number()
+    .test(
+      'is-greater',
+      'Maximum experience should be greater than or equal to minimum experience',
+      function (value) {
+        return this.parent.experienceMinimum <= value;
+      }
+    ),
   salaryMinimum: yup.number(),
-  salaryMaximum: yup.number().test(
-    'is-greater',
-    'Maximum salary should be greater than or equal to minimum salary',
-    function (value = 0) {
-      return this.parent.salaryMinimum <= value;
-    }
-  ),
+  salaryMaximum: yup
+    .number()
+    .test(
+      'is-greater',
+      'Maximum salary should be greater than or equal to minimum salary',
+      function (value = 0) {
+        return this.parent.salaryMinimum <= value;
+      }
+    ),
   totalEmployee: yup.number(),
   applyType: yup.boolean(),
 });
@@ -35,7 +40,6 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, closeModal }: ModalProps) => {
-
   const createJobMutation = useCreateJob();
 
   const [step, setStep] = useState<number>(1);
@@ -44,8 +48,11 @@ export const Modal = ({ isOpen, closeModal }: ModalProps) => {
     setStep((prevStep) => prevStep + 1);
   };
   const onSubmitStep1 = (data) => {
-    console.log("Error", data);
-    handleNextStep()
+    console.log('Error', data);
+    handleNextStep();
+  };
+  const onSubmitStep2: SubmitHandler<Step2FormValues> = (data) => {
+    console.log(data);
   };
 
   return (
@@ -83,26 +90,25 @@ export const Modal = ({ isOpen, closeModal }: ModalProps) => {
                         fontWeight="font-normal"
                         lineHeight="leading-7"
                         text="Create a job"
-                        color="text-shark-1" />
+                        color="text-shark-1"
+                      />
                       <Typography
                         fontSize="text-base"
                         fontWeight="font-medium"
                         lineHeight="leading-6"
                         text={`Step ${step}`}
-                        color="text-shark-1" />
+                        color="text-shark-1"
+                      />
                     </div>
                     {step === 1 && <Step1 onSubmit={onSubmitStep1} />}
-                    {step === 2 && <Step2 />}
-
+                    {step === 2 && <Step2 onSubmit={onSubmitStep2} />}
                   </div>
                   <div className="flex justify-end">
-                    {
-                      step === 1 ?
-                        <PrimaryButton text="Next" form="step1Form" />
-                        :
-                        <PrimaryButton text="Save" form="step2Form" />
-
-                    }
+                    {step === 1 ? (
+                      <PrimaryButton text="Next" form="step1Form" />
+                    ) : (
+                      <PrimaryButton text="Save" form="step2Form" />
+                    )}
                   </div>
                 </div>
               </Dialog.Panel>
