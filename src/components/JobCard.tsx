@@ -1,12 +1,32 @@
 import netflix from '../assets/netflix.svg'
+import { Job } from '../types';
 import { PrimaryButton } from './PrimaryButton';
+import { SecondaryButton } from './SecondaryButton';
 import { Typography } from './Typography';
+import { useMemo } from 'react'
 
+interface JobCardProps {
+  job: Job
+}
 
-export const JobCard = () => {
+export const JobCard = ({ job }: JobCardProps) => {
+  const jobExperience: string = useMemo(() => {
+    if (!job) return "";
+    let str = ""
+    if (job.experienceMinimum) str += `Experience (${job.experienceMinimum}`
+    if (job.experienceMaximum) str += ` - ${job.experienceMaximum} Year)`
+    return str;
+  }, [job])
+  const salaryExperience: string = useMemo(() => {
+    if (!job) return "";
+    let str = ""
+    if (job.salaryMinimum) str += `INR (₹) ${job.salaryMinimum}`
+    if (job.salaryMaximum) str += ` - ${job.salaryMaximum} / Month `
+    return str;
+  }, [job])
   return (
     <>
-      <div className="flex w-1/2   ">
+      <div className="flex font-Poppins ">
         <div className="bg-white w-full py-4 px-6 rounded-[10px] border border-iron box-shadow">
           <div className='flex gap-2'>
             <div>
@@ -17,54 +37,55 @@ export const JobCard = () => {
                 fontSize="text-2xl"
                 fontWeight="font-normal"
                 lineHeight="leading-8"
-                text="UX UI Designer"
+                text={job.jobTitle}
                 color="text-black" />
               <Typography
                 fontSize="text-base"
                 fontWeight="font-normal"
                 lineHeight="leading-6"
-                text="Great Vibes - Information Technology"
+                text={job.companyName}
                 color="text-black" />
               <Typography
                 fontSize="text-base"
                 fontWeight="font-normal"
                 lineHeight="leading-6"
-                text="Chennai, Tamilnadu, India (In-office)"
+                text={job.location}
                 color="text-dove-gray"
                 className='mb-6' />
               <Typography
                 fontSize="text-base"
                 fontWeight="font-normal"
                 lineHeight="leading-6"
-                text="Part-Time (9.00 am - 5.00 pm IST)"
+                text={job.remoteType}
                 color="text-shark"
                 className='mb-2' />
               <Typography
                 fontSize="text-base"
                 fontWeight="font-normal"
                 lineHeight="leading-6"
-                text="Experience (1 - 2 years)"
+                text={jobExperience}
                 color="text-shark"
                 className='mb-2' />
               <Typography
                 fontSize="text-base"
                 fontWeight="font-normal"
                 lineHeight="leading-6"
-                text="INR (₹) 30,000 - 50,000 / Month"
+                text={salaryExperience}
                 color="text-shark"
                 className='mb-2' />
               <Typography
                 fontSize="text-base"
                 fontWeight="font-normal"
                 lineHeight="leading-6"
-                text="51-200 employees"
+                text={`${job.totalEmployee} employees`}
                 color="text-shark"
                 className='mb-6' />
-              <div className='flex '>
+              {
+                job.applyType ?
+                  <PrimaryButton text="Apply Now" /> :
+                  <SecondaryButton text="External Apply" />
 
-                <PrimaryButton text="Apply Now" />
-              </div>
-
+              }
             </div>
           </div>
         </div>

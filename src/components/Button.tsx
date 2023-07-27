@@ -9,17 +9,20 @@ const variants = {
 export type ButtonProps = {
   type?: keyof typeof variants;
   children: React.ReactNode;
+  form: string;
   onClick?: () => void;
 };
 
 export const Button = ({
   type = "primary",
   children,
+  form,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      type="button"
+      type="submit"
+      form={form}
       className={twMerge(
         `flex justify-center px-4 py-2 items-center`,
         variants[type]

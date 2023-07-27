@@ -1,7 +1,32 @@
+import { useState } from 'react'
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { Typography } from "./Typography";
-import { InputField } from "./InputField";
+import { PrimaryButton } from "./PrimaryButton";
+import { Step1 } from "./Step1";
+import { Step2 } from "./Step2";
+import * as yup from 'yup';
+
+const stepTwoSchema = yup.object().shape({
+  experienceMinimum: yup.number(),
+  experienceMaximum: yup.number().test(
+    'is-greater',
+    'Maximum experience should be greater than or equal to minimum experience',
+    function (value) {
+      return this.parent.experienceMinimum <= value;
+    }
+  ),
+  salaryMinimum: yup.number(),
+  salaryMaximum: yup.number().test(
+    'is-greater',
+    'Maximum salary should be greater than or equal to minimum salary',
+    function (value = 0) {
+      return this.parent.salaryMinimum <= value;
+    }
+  ),
+  totalEmployee: yup.number(),
+  applyType: yup.boolean(),
+});
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,6 +34,17 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, closeModal }: ModalProps) => {
+
+  const [step, setStep] = useState<number>(1);
+
+  const handleNextStep = () => {
+    setStep((prevStep) => prevStep + 1);
+  };
+  const onSubmitStep1 = (data) => {
+    console.log("Error", data);
+    handleNextStep()
+  };
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -36,23 +72,34 @@ export const Modal = ({ isOpen, closeModal }: ModalProps) => {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-[10px] bg-white p-8 align-middle shadow-xl transition-all border border-card-border">
-                <div className="flex justify-between">
-                  <Typography
-                    fontSize="text-xl"
-                    fontWeight="font-normal"
-                    lineHeight="leading-7"
-                    text="Create a job"
-                    color="text-shark-1" />
-                  <Typography
-                    fontSize="text-base"
-                    fontWeight="font-medium"
-                    lineHeight="leading-6"
-                    text="Step 1"
-                    color="text-shark-1" />
-                </div>
-                <div className="mt-6">
+                <div className="flex flex-col gap-24">
                   <div>
-                    <InputField placeholder="ex. UX UI Designer" label="Job title" />
+                    <div className="flex justify-between">
+                      <Typography
+                        fontSize="text-xl"
+                        fontWeight="font-normal"
+                        lineHeight="leading-7"
+                        text="Create a job"
+                        color="text-shark-1" />
+                      <Typography
+                        fontSize="text-base"
+                        fontWeight="font-medium"
+                        lineHeight="leading-6"
+                        text={`Step ${step}`}
+                        color="text-shark-1" />
+                    </div>
+                    {step === 1 && <Step1 onSubmit={onSubmitStep1} />}
+                    {step === 2 && <Step2 />}
+
+                  </div>
+                  <div className="flex justify-end">
+                    {
+                      step === 1 ?
+                        <PrimaryButton text="Next" form="step1Form" />
+                        :
+                        <PrimaryButton text="Save" form="step2Form" />
+
+                    }
                   </div>
                 </div>
               </Dialog.Panel>

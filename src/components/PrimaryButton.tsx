@@ -3,10 +3,10 @@ import { Typography } from "./Typography";
 
 export type ButtonProps = {
   text?: string;
-  onClick?: () => void;
+  form?: string;
 };
 
-export const PrimaryButton = ({ text = "TEXT", onClick }: ButtonProps) => {
+export const PrimaryButton = ({ text = "TEXT", form = "" }: ButtonProps) => {
   return (
     <Button
       type="primary"
@@ -19,7 +19,7 @@ export const PrimaryButton = ({ text = "TEXT", onClick }: ButtonProps) => {
           text={text}
         />
       }
-      onClick={onClick}
+      form={form}
     />
   );
 };

@@ -9,7 +9,7 @@ export const axios = Axios.create({
 
 axios.interceptors.response.use(
   (response) => {
-    return response.data;
+    return JSON.parse(response?.data?.contents);
   },
   (error) => {
     const message = error.response?.data || error.message;
