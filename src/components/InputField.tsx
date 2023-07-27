@@ -1,17 +1,25 @@
 import { twMerge } from "tailwind-merge";
+import { Typography } from "./Typography";
 
-interface InputFieldProps {
-  label: string;
-}
+export type InputFieldProps = {
+  placeholder: string;
+};
 
-export const InputField = ({ label }: InputFieldProps) => {
+export const InputField = ({ placeholder }: InputFieldProps) => {
   return (
     <div>
-      <label>{label}</label>
+      <Typography
+        fontSize="text-sm"
+        fontWeight="font-medium"
+        lineHeight="leading-5"
+        text="Job title"
+        color="text-dark"
+      />
       <input
         type="text"
+        placeholder={placeholder}
         className={twMerge(
-          "flex items-start self-stretch rounded-[0.3125rem] px-3 py-2"
+          "flex items-start w-full border border-card-border bg-white outline-none rounded-[0.3125rem] px-3 py-2 text-sm font-normal text-grey"
         )}
       />
     </div>

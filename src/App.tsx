@@ -10,14 +10,19 @@ function App() {
       <Layout>
         <Button type="primary" children={"NEXT"} />
         <Button type="primary" children={"Apply Now"} />
-        <Button type="secondary" children={<Typography
-          fontSize="text-2xl"
-          fontWeight="font-normal"
-          lineHeight="leading-8"
-          color="text-black"
-          text="UX UI Designer"
-        />} />
-        <InputField label="Job title" />
+        <Button
+          type="secondary"
+          children={
+            <Typography
+              fontSize="text-2xl"
+              fontWeight="font-normal"
+              lineHeight="leading-8"
+              color="text-black"
+              text="UX UI Designer"
+            />
+          }
+        />
+        <InputField placeholder="ex. UX UI Designer" />
       </Layout>
     </AppProvider>
   );

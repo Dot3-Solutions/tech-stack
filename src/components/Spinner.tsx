@@ -8,7 +8,7 @@ const sizes = {
 };
 
 const variants = {
-  light: "text-white",
+  light: "text-alabaster",
   primary: "text-blue-600",
 };
 

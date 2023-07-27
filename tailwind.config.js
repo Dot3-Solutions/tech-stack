@@ -7,7 +7,7 @@ export default {
         "card-color": "#FFFFFF",
         "card-border": "#E6E6E6",
         dark: "#212121",
-        white: "#FAFAFA",
+        alabaster: "#FAFAFA",
         error: "#D86161",
         grey: "#7A7A7A",
         "primary-color": "#1597E4",
