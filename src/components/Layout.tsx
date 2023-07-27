@@ -6,5 +6,5 @@ export type LayoutProps = {
 };
 
 export const Layout = ({ children, className }: LayoutProps) => (
-  <div className={twMerge("", className)}>{children}</div>
+  <div className={twMerge(`font-Poppins`, className)}>{children}</div>
 );
