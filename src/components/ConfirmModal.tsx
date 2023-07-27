@@ -2,8 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { SecondaryButton } from './SecondaryButton';
 import { useDeleteJob } from '../api/deleteJob';
-import { Spinner } from './Spinner';
-import { PrimaryButton } from './PrimaryButton';
+import { DeleteButton } from './DeleteButton';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -47,17 +46,18 @@ export const ConfirmModal = ({ isOpen, closeModal, id = '' }: ConfirmModalProps)
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">Are you sure you want to delete job?</p>
                 </div>
-                {deleteJob.isLoading && <Spinner></Spinner>}
+                {/* {!deleteJob.isLoading && <Spinner></Spinner>} */}
                 <div className="mt-4 flex gap-4">
-                  <PrimaryButton
+                  <DeleteButton
                     text="Delete"
+                    isLoading={deleteJob.isLoading} // Pass the deleteJob.isLoading as isLoading prop
                     onClick={async () => {
                       if (!deleteJob.isLoading) {
                         await deleteJob.mutateAsync(id);
                         closeModal();
                       }
                     }}
-                  ></PrimaryButton>
+                  />
                   <SecondaryButton text="Cancel" onClick={closeModal}></SecondaryButton>
                 </div>
               </Dialog.Panel>
