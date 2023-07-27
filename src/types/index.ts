@@ -9,6 +9,6 @@ export type Job = {
   salaryMinimum: number;
   salaryMaximum: number;
   totalEmployee: number;
-  applyType: boolean;
+  applyType: string;
   id: string;
 };
