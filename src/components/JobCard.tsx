@@ -11,10 +11,10 @@ interface JobCardProps {
   job: Job;
   setOpenConfirm: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedId: React.Dispatch<React.SetStateAction<string>>;
-  setIsForEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  onEdit: (job: Job) => void
 }
 
-export const JobCard = ({ job, setOpenConfirm, setSelectedId, setIsForEdit }: JobCardProps) => {
+export const JobCard = ({ job, setOpenConfirm, setSelectedId, onEdit }: JobCardProps) => {
   const jobExperience: string = useMemo(() => {
     if (!job) return '';
     let str = '';
@@ -106,7 +106,7 @@ export const JobCard = ({ job, setOpenConfirm, setSelectedId, setIsForEdit }: Jo
                 alt=""
                 onClick={() => {
                   setSelectedId(job.id);
-                  setIsForEdit(true);
+                  onEdit(job)
                 }}
               />
               <img

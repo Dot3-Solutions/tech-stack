@@ -4,7 +4,8 @@ import { MutationConfig, queryClient } from "../lib/react-query";
 import { axios } from "../lib/axios";
 import { Job } from "../types";
 
-export type CreateJobDTO = Omit<Job, "id">;
+// export type CreateJobDTO = Omit<Job, "id">;
+export type CreateJobDTO = Job
 const key = "jobs";
 
 const createJob = (data: CreateJobDTO): Promise<Job> => {

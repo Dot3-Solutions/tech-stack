@@ -14,20 +14,25 @@ const stepOneSchema = yup.object().shape({
   jobTitle: yup.string().required('Job title is required'),
   companyName: yup.string().required('Company name is required'),
   industry: yup.string().required('Industry is required'),
+  location: yup.string().optional(),
+  remoteType: yup.string().optional()
 });
 export type Step1Props = {
   onSubmit: (data: Step1FormValues) => void;
+  defaultValues?: Step1FormValues
 };
 
-export const Step1 = ({ onSubmit }: Step1Props) => {
+export const Step1 = ({ onSubmit,defaultValues }: Step1Props) => {
   const {
     handleSubmit,
     formState: { errors },
     control,
   } = useForm({
+    defaultValues: defaultValues,
     resolver: yupResolver(stepOneSchema),
   });
   console.log('Error', errors);
+  console.log("defaultValues: ",defaultValues)
 
   return (
     <>

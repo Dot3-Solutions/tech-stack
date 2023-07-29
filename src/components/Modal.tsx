@@ -7,16 +7,19 @@ import { Step1, Step1FormValues } from './Step1';
 import { Step2, Step2FormValues } from './Step2';
 import { SubmitHandler } from 'react-hook-form';
 import { useCreateJob } from '../api/createJob';
+import { Job } from '../types';
+import { useUpdateJob } from '../api/updateJob';
 
 interface ModalProps {
+  job?: Job
   isOpen: boolean;
-  isForEdit: boolean;
   id?: string;
   closeModal: () => void;
 }
 
-export const Modal = ({ isOpen, closeModal }: ModalProps) => {
+export const Modal = ({ isOpen, closeModal, job }: ModalProps) => {
   const createJobMutation = useCreateJob();
+  const updateJobMutation = useUpdateJob();
   const [step1Data, setStep1Data] = useState<Step1FormValues>();
   const [step, setStep] = useState<number>(1);
 
@@ -28,12 +31,23 @@ export const Modal = ({ isOpen, closeModal }: ModalProps) => {
     handleNextStep();
   };
   const onSubmitStep2: SubmitHandler<Step2FormValues> = async (data) => {
-    console.log('FormData', data, step1Data);
-    await createJobMutation.mutateAsync({
-      ...step1Data,
-      applyType: data.applyType ? 'apply' : 'external',
-      ...data,
-    });
+    if(step1Data){
+      if(job){
+        await updateJobMutation.mutateAsync({
+          ...job,
+          ...step1Data,
+          applyType: data.applyType ? 'apply' : 'external',
+          ...data,
+        });
+      }    
+      else {
+        await createJobMutation.mutateAsync({
+          ...step1Data,
+          applyType: data.applyType ? 'apply' : 'external',
+          ...data,
+        });
+      }
+    }
     closeModal();
     setStep(1);
   };
@@ -83,8 +97,8 @@ export const Modal = ({ isOpen, closeModal }: ModalProps) => {
                         color="text-shark-1"
                       />
                     </div>
-                    {step === 1 && <Step1 onSubmit={onSubmitStep1} />}
-                    {step === 2 && <Step2 onSubmit={onSubmitStep2} />}
+                    {step === 1 && <Step1 onSubmit={onSubmitStep1} defaultValues={job}/>}
+                    {step === 2 && <Step2 onSubmit={onSubmitStep2} defaultValues={job}/>}
                   </div>
                   <div className="flex justify-end">
                     {step === 1 ? (

@@ -1,11 +1,11 @@
 import { twMerge } from "tailwind-merge";
 
 export type TypographyProps = {
-    fontSize: string,
-    fontWeight: string,
-    lineHeight: string,
-    color: string,
-    text: string,
+    fontSize?: string,
+    fontWeight?: string,
+    lineHeight?: string,
+    color?: string,
+    text?: string,
     className?: string,
 };
 

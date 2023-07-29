@@ -34,14 +34,16 @@ const stepTwoSchema = yup.object().shape({
 
 export type Step2Props = {
     onSubmit: (data: Step2FormValues) => void;
+    defaultValues?: Step2FormValues
 };
 
-export const Step2 = ({ onSubmit }: Step2Props) => {
+export const Step2 = ({ onSubmit,defaultValues }: Step2Props) => {
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm({
+        defaultValues: defaultValues,
         resolver: yupResolver(stepTwoSchema),
     });
 

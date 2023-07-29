@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { useJobs } from '../api/getJobs';
 import { JobCard } from '../components/JobCard';
 import { Modal } from '../components/Modal';
-import { PrimaryButton } from '../components/PrimaryButton';
 import { SecondaryButton } from '../components/SecondaryButton';
-import { InputField } from '../components/InputField';
 import { Spinner } from '../components/Spinner';
 import { ConfirmModal } from '../components/ConfirmModal';
+import { Job } from '../types';
 
 const Home = () => {
   const { data: jobs, isLoading, error } = useJobs();
@@ -19,6 +18,7 @@ const Home = () => {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const [selectedId, setSelectedId] = useState<string>('');
+  const [job, setJob] = useState<Job>()
   return (
     <div className="mb-9 font-Poppins">
       <div className="max-w-[90%] mx-auto px-4 pt-5">
@@ -41,7 +41,10 @@ const Home = () => {
                     job={job}
                     setOpenConfirm={setOpenConfirm}
                     setSelectedId={setSelectedId}
-                    setIsForEdit={setIsForEdit}
+                    onEdit={(job)=>{
+                      setJob(job)
+                      setIsOpen(true)
+                    }}
                   ></JobCard>
                 );
               })}
@@ -49,7 +52,7 @@ const Home = () => {
         )}
       </div>
 
-      <Modal isOpen={isOpen} closeModal={closeModal} isForEdit={isForEdit} id={selectedId} />
+      <Modal isOpen={isOpen} closeModal={closeModal} job={job} id={selectedId} />
       <ConfirmModal isOpen={openConfirm} id={selectedId} closeModal={() => setOpenConfirm(false)} />
     </div>
   );
