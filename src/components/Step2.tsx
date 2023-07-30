@@ -53,7 +53,7 @@ export const Step2 = ({ onSubmit, defaultValues }: Step2Props) => {
     formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
-    resolver: yupResolver(stepTwoSchema),
+    resolver: yupResolver<Step2FormValues>(stepTwoSchema),
   });
 
   return (

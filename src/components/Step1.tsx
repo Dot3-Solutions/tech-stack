@@ -29,7 +29,7 @@ export const Step1 = ({ onSubmit, defaultValues }: Step1Props) => {
     control,
   } = useForm({
     defaultValues: defaultValues,
-    resolver: yupResolver(stepOneSchema),
+    resolver: yupResolver<Step1FormValues>(stepOneSchema),
   });
 
   return (

@@ -6,7 +6,7 @@ import { Job } from '../types';
 
 const key = 'jobs';
 
-const deleteJob = (id: string) => {
+const deleteJob = (id: string): Promise<Job> => {
   return axios.delete(`/Job/${id}`);
 };
 
