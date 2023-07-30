@@ -16,23 +16,24 @@ type UseDeleteJobOptions = {
 
 export const useDeleteJob = ({ config }: UseDeleteJobOptions = {}) => {
   return useMutation({
-    onMutate: async (id) => {
+    onMutate: async () => {
       await queryClient.cancelQueries(key);
       const previousJobs = queryClient.getQueryData<Job[]>(key);
-      queryClient.setQueryData(
-        key,
-        previousJobs?.filter((job) => job.id !== id)
-      );
       return { previousJobs };
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError: (_, __, context: any) => {
+    onError: (_: any, __: any, context: any) => {
       if (context.previousJobs) {
         queryClient.setQueryData(key, context.previousJobs);
       }
     },
-    onSuccess: () => {
+    onSuccess: (data: Job) => {
       queryClient.invalidateQueries(key);
+      const previousJobs = queryClient.getQueryData<Job[]>(key);
+      queryClient.setQueryData(
+        key,
+        previousJobs?.filter((job) => job.id !== data?.id)
+      );
       toast.success('Job Deleted');
     },
     ...config,

@@ -4,13 +4,20 @@ import { Typography } from './Typography';
 export type ButtonProps = {
   text?: string;
   form?: string;
+  isLoading?: boolean;
   onClick?: () => void;
 };
 
-export const PrimaryButton = ({ text = 'TEXT', form = '', ...props }: ButtonProps) => {
+export const PrimaryButton = ({
+  text = 'TEXT',
+  isLoading = false,
+  form = '',
+  ...props
+}: ButtonProps) => {
   return (
     <Button
       type="primary"
+      isLoading={isLoading}
       children={
         <Typography
           fontSize="text-base"

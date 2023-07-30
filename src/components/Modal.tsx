@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { Typography } from './Typography';
@@ -11,7 +11,7 @@ import { Job } from '../types';
 import { useUpdateJob } from '../api/updateJob';
 
 interface ModalProps {
-  job?: Job
+  job?: Job;
   isOpen: boolean;
   id?: string;
   closeModal: () => void;
@@ -22,6 +22,32 @@ export const Modal = ({ isOpen, closeModal, job }: ModalProps) => {
   const updateJobMutation = useUpdateJob();
   const [step1Data, setStep1Data] = useState<Step1FormValues>();
   const [step, setStep] = useState<number>(1);
+  const step1JobDefaultValue: Step1FormValues | undefined = useMemo(() => {
+    if (job === undefined) return undefined;
+    return {
+      jobTitle: job.jobTitle,
+      companyName: job.companyName,
+      industry: job.industry,
+      location: job?.location,
+      remoteType: job?.remoteType,
+    };
+  }, [job]);
+
+  const step2JobDefaultValue: Step2FormValues | undefined = useMemo(() => {
+    if (job === undefined) return undefined;
+    return {
+      experienceMinimum: job.experienceMinimum,
+      experienceMaximum: job.experienceMaximum,
+      salaryMinimum: job.salaryMinimum,
+      salaryMaximum: job.salaryMaximum,
+      totalEmployee: job.totalEmployee,
+      applyType: job.applyType,
+    };
+  }, [job]);
+
+  useEffect(() => {
+    if (isOpen) setStep(1);
+  }, [isOpen]);
 
   const handleNextStep = () => {
     setStep((prevStep) => prevStep + 1);
@@ -30,26 +56,32 @@ export const Modal = ({ isOpen, closeModal, job }: ModalProps) => {
     setStep1Data(data);
     handleNextStep();
   };
-  const onSubmitStep2: SubmitHandler<Step2FormValues> = async (data) => {
-    if(step1Data){
-      if(job){
+  useEffect(() => {
+    if (updateJobMutation?.isSuccess || createJobMutation?.isSuccess) {
+      closeModal();
+      setStep(1);
+      updateJobMutation.reset();
+      createJobMutation.reset();
+    }
+  }, [closeModal, createJobMutation, updateJobMutation]);
+
+  const onSubmitStep2: SubmitHandler<Step2FormValues> = async (data: Step2FormValues) => {
+    if (step1Data) {
+      if (job) {
         await updateJobMutation.mutateAsync({
           ...job,
           ...step1Data,
-          applyType: data.applyType ? 'apply' : 'external',
+          applyType: data.applyType,
           ...data,
         });
-      }    
-      else {
+      } else {
         await createJobMutation.mutateAsync({
           ...step1Data,
-          applyType: data.applyType ? 'apply' : 'external',
+          applyType: data.applyType,
           ...data,
         });
       }
     }
-    closeModal();
-    setStep(1);
   };
 
   return (
@@ -97,14 +129,22 @@ export const Modal = ({ isOpen, closeModal, job }: ModalProps) => {
                         color="text-shark-1"
                       />
                     </div>
-                    {step === 1 && <Step1 onSubmit={onSubmitStep1} defaultValues={job}/>}
-                    {step === 2 && <Step2 onSubmit={onSubmitStep2} defaultValues={job}/>}
+                    {step === 1 && (
+                      <Step1 onSubmit={onSubmitStep1} defaultValues={step1JobDefaultValue} />
+                    )}
+                    {step === 2 && (
+                      <Step2 onSubmit={onSubmitStep2} defaultValues={step2JobDefaultValue} />
+                    )}
                   </div>
                   <div className="flex justify-end">
                     {step === 1 ? (
                       <PrimaryButton text="Next" form="step1Form" />
                     ) : (
-                      <PrimaryButton text="Save" form="step2Form" />
+                      <PrimaryButton
+                        isLoading={createJobMutation.isLoading || updateJobMutation.isLoading}
+                        text="Save"
+                        form="step2Form"
+                      />
                     )}
                   </div>
                 </div>

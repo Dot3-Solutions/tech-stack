@@ -1,12 +1,12 @@
-import { useMutation } from "react-query";
-import toast from "react-hot-toast";
-import { MutationConfig, queryClient } from "../lib/react-query";
-import { axios } from "../lib/axios";
-import { Job } from "../types";
+import { useMutation } from 'react-query';
+import toast from 'react-hot-toast';
+import { MutationConfig, queryClient } from '../lib/react-query';
+import { axios } from '../lib/axios';
+import { Job } from '../types';
 
 // export type CreateJobDTO = Omit<Job, "id">;
-export type CreateJobDTO = Job
-const key = "jobs";
+export type CreateJobDTO = Job;
+const key = 'jobs';
 
 const createJob = (data: CreateJobDTO): Promise<Job> => {
   return axios.post(`/Job`, data);
@@ -18,10 +18,9 @@ type UseCreateJobOptions = {
 
 export const useCreateJob = ({ config }: UseCreateJobOptions = {}) => {
   return useMutation({
-    onMutate: async (newJob) => {
+    onMutate: async () => {
       await queryClient.cancelQueries(key);
       const previousJobs = queryClient.getQueryData<Job[]>(key);
-      queryClient.setQueryData(key, [...(previousJobs || []), newJob]);
       return { previousJobs };
     },
     onError: (_, __, context: any) => {
@@ -29,9 +28,11 @@ export const useCreateJob = ({ config }: UseCreateJobOptions = {}) => {
         queryClient.setQueryData(key, context.previousJobs);
       }
     },
-    onSuccess: () => {
+    onSuccess: (newJob) => {
       queryClient.invalidateQueries(key);
-      toast.success("Job Created");
+      toast.success('Job Created');
+      const previousJobs = queryClient.getQueryData<Job[]>(key);
+      queryClient.setQueryData(key, [...(previousJobs || []), newJob]);
     },
     ...config,
     mutationFn: createJob,

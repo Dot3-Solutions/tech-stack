@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { SecondaryButton } from './SecondaryButton';
 import { useDeleteJob } from '../api/deleteJob';
 import { DeleteButton } from './DeleteButton';
@@ -12,6 +12,13 @@ interface ConfirmModalProps {
 
 export const ConfirmModal = ({ isOpen, closeModal, id = '' }: ConfirmModalProps) => {
   const deleteJob = useDeleteJob();
+  useEffect(() => {
+    if (deleteJob.isSuccess) {
+      closeModal();
+      deleteJob.reset();
+    }
+  }, [closeModal, deleteJob]);
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -46,7 +53,6 @@ export const ConfirmModal = ({ isOpen, closeModal, id = '' }: ConfirmModalProps)
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">Are you sure you want to delete job?</p>
                 </div>
-                {/* {!deleteJob.isLoading && <Spinner></Spinner>} */}
                 <div className="mt-4 flex gap-4">
                   <DeleteButton
                     text="Delete"
@@ -54,7 +60,6 @@ export const ConfirmModal = ({ isOpen, closeModal, id = '' }: ConfirmModalProps)
                     onClick={async () => {
                       if (!deleteJob.isLoading) {
                         await deleteJob.mutateAsync(id);
-                        closeModal();
                       }
                     }}
                   />

@@ -10,24 +10,37 @@ import Delete from '../assets/Delete.svg';
 interface JobCardProps {
   job: Job;
   setOpenConfirm: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedId: React.Dispatch<React.SetStateAction<string>>;
-  onEdit: (job: Job) => void
+  setSelectedId: React.Dispatch<React.SetStateAction<string | undefined>>;
+  onEdit: (job: Job) => void;
 }
 
 export const JobCard = ({ job, setOpenConfirm, setSelectedId, onEdit }: JobCardProps) => {
   const jobExperience: string = useMemo(() => {
     if (!job) return '';
-    let str = '';
-    if (job.experienceMinimum) str += `Experience (${job.experienceMinimum}`;
-    if (job.experienceMaximum) str += ` - ${job.experienceMaximum} Year)`;
-    return str;
+    if (job.experienceMinimum === 0 && job.experienceMaximum === Number.MAX_VALUE) {
+      return '';
+    }
+    if (job.experienceMinimum !== 0 && job.experienceMaximum !== Number.MAX_VALUE) {
+      return `Experience (${job.experienceMinimum} - ${job.experienceMaximum}) Year`;
+    }
+    if (job.experienceMinimum && job.experienceMinimum !== 0)
+      return `Experience ${job.experienceMinimum}+ Year`;
+    if (job.experienceMaximum && job.experienceMaximum !== Number.MAX_VALUE)
+      return `Experience ${job.experienceMaximum}+ Year`;
+    return '';
   }, [job]);
   const salaryExperience: string = useMemo(() => {
     if (!job) return '';
-    let str = '';
-    if (job.salaryMinimum) str += `INR (₹) ${job.salaryMinimum}`;
-    if (job.salaryMaximum) str += ` - ${job.salaryMaximum} / Month `;
-    return str;
+    if (job.salaryMinimum === 0 && job.salaryMaximum === Number.MAX_VALUE) {
+      return '';
+    }
+    if (job.salaryMinimum !== 0 && job.salaryMaximum !== Number.MAX_VALUE) {
+      return `INR (₹) (${job.salaryMinimum} - ${job.salaryMaximum}) / Month`;
+    }
+    if (job.salaryMinimum && job.salaryMinimum !== 0) return `INR (₹) ${job.salaryMinimum} / Month`;
+    if (job.salaryMaximum && job.salaryMaximum !== Number.MAX_VALUE)
+      return `INR (₹) ${job.salaryMaximum} / Month`;
+    return '';
   }, [job]);
 
   return (
@@ -85,18 +98,25 @@ export const JobCard = ({ job, setOpenConfirm, setSelectedId, onEdit }: JobCardP
                 color="text-shark"
                 className="mb-2"
               />
-              <Typography
-                fontSize="text-base"
-                fontWeight="font-normal"
-                lineHeight="leading-6"
-                text={`${job.totalEmployee} employees`}
-                color="text-shark"
-                className="mb-6"
-              />
-              {job.applyType ? (
-                <PrimaryButton text="Apply Now" />
-              ) : (
-                <SecondaryButton text="External Apply" />
+              {job.totalEmployee !== 0 && (
+                <Typography
+                  fontSize="text-base"
+                  fontWeight="font-normal"
+                  lineHeight="leading-6"
+                  text={`${job.totalEmployee} employees`}
+                  color="text-shark"
+                  className="mb-6"
+                />
+              )}
+              {job.applyType !== '' && (
+                <>
+                  {' '}
+                  {job.applyType !== '' && job.applyType === 'apply' ? (
+                    <PrimaryButton text="Apply Now" />
+                  ) : (
+                    <SecondaryButton text="External Apply" />
+                  )}
+                </>
               )}
             </div>
             <div className="ml-auto flex items-center gap-4">
@@ -105,15 +125,15 @@ export const JobCard = ({ job, setOpenConfirm, setSelectedId, onEdit }: JobCardP
                 className="h-5 w-5 cursor-pointer"
                 alt=""
                 onClick={() => {
-                  setSelectedId(job.id);
-                  onEdit(job)
+                  setSelectedId(job?.id);
+                  onEdit(job);
                 }}
               />
               <img
                 src={Delete}
                 className="h-5 w-5 cursor-pointer"
                 onClick={() => {
-                  setSelectedId(job.id);
+                  setSelectedId(job?.id);
                   setOpenConfirm(true);
                 }}
                 alt=""

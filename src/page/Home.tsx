@@ -9,16 +9,19 @@ import { Job } from '../types';
 
 const Home = () => {
   const { data: jobs, isLoading, error } = useJobs();
-  console.log('data', jobs, isLoading, error);
-
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isForEdit, setIsForEdit] = useState<boolean>(false);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
-  const [selectedId, setSelectedId] = useState<string>('');
-  const [job, setJob] = useState<Job>()
+  const [job, setJob] = useState<Job>();
+  const [selectedId, setSelectedId] = useState<string | undefined>('');
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+    setJob(undefined);
+  };
+
   return (
     <div className="mb-9 font-Poppins">
       <div className="max-w-[90%] mx-auto px-4 pt-5">
@@ -30,7 +33,7 @@ const Home = () => {
             <Spinner />
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-[50.12px] mt-10  ">
+          <div className="grid grid-cols-1 gap-[50.12px] lg:grid-cols-2 mt-10  ">
             {!isLoading &&
               !error &&
               jobs &&
@@ -41,9 +44,9 @@ const Home = () => {
                     job={job}
                     setOpenConfirm={setOpenConfirm}
                     setSelectedId={setSelectedId}
-                    onEdit={(job)=>{
-                      setJob(job)
-                      setIsOpen(true)
+                    onEdit={(job) => {
+                      setJob(job);
+                      setIsOpen(true);
                     }}
                   ></JobCard>
                 );
