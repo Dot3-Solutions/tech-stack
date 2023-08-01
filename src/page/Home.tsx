@@ -24,16 +24,18 @@ const Home = () => {
 
   return (
     <div className="mb-9 font-Poppins">
-      <div className="max-w-[90%] mx-auto px-4 pt-5">
-        <div className="flex justify-end">
+      <div className='bg-white   border-b-slate-300 py-4 border-b-2'>
+        <div className='max-w-[95%] flex justify-end mx-auto px-4'>
           <SecondaryButton text="Create Job" onClick={openModal} />
         </div>
+      </div>
+      <div className="max-w-[95%] mx-auto px-4">
         {isLoading ? (
           <div className="flex items-center justify-center h-[80vh]">
             <Spinner />
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-[50.12px] lg:grid-cols-2 mt-10  ">
+          <div className="grid grid-cols-1  gap-[50.12px] md:grid-cols-2 mt-10  ">
             {!isLoading &&
               !error &&
               jobs &&

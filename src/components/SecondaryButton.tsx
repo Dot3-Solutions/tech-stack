@@ -11,7 +11,7 @@ export const SecondaryButton = ({ text = 'TEXT', ...props }: ButtonProps) => {
           fontSize="text-sm"
           fontWeight="font-normal"
           lineHeight="leading-8"
-          color="text-black"
+          // color="text-black"
           text={text}
         />
       }

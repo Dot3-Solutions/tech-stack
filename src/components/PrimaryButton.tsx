@@ -23,7 +23,7 @@ export const PrimaryButton = ({
           fontSize="text-base"
           fontWeight="font-normal"
           lineHeight="leading-8"
-          color="text-white"
+          // color="text-white"
           text={text}
         />
       }
